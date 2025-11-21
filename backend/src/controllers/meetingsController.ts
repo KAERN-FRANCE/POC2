@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import db from '../database'
 import { Meeting, TranscriptSegment, CreateMeetingDTO, UpdateMeetingDTO, AddTranscriptSegmentDTO } from '../types'
 import * as exportService from '../services/exportService'
+import { checkSegmentAndAlert } from '../services/factCheckService'
 
 // Récupérer toutes les réunions
 export const getAllMeetings = (req: Request, res: Response) => {
@@ -202,13 +203,13 @@ export const deleteMeeting = (req: Request, res: Response) => {
 }
 
 // Ajouter un segment de transcription
-export const addTranscriptSegment = (req: Request, res: Response) => {
+export const addTranscriptSegment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
     const segmentData: AddTranscriptSegmentDTO = req.body
 
     // Vérifier que la réunion existe
-    const existing = db.prepare('SELECT id FROM meetings WHERE id = ?').get(id)
+    const existing = db.prepare('SELECT id, fact_checking_enabled FROM meetings WHERE id = ?').get(id) as any
     if (!existing) {
       return res.status(404).json({ error: 'Réunion non trouvée' })
     }
@@ -227,6 +228,17 @@ export const addTranscriptSegment = (req: Request, res: Response) => {
       segmentData.speaker || null
     )
 
+    // Analyse en temps réel avec ChatGPT (si activé)
+    let alert = null
+    if (existing.fact_checking_enabled === 1 && process.env.OPENAI_API_KEY) {
+      try {
+        alert = await checkSegmentAndAlert(id, segmentId, segmentData.text, segmentData.timestamp)
+      } catch (error) {
+        console.error('Erreur lors du fact-checking:', error)
+        // On ne bloque pas l'ajout du segment si le fact-checking échoue
+      }
+    }
+
     const segment: TranscriptSegment = {
       id: segmentId,
       text: segmentData.text,
@@ -235,7 +247,10 @@ export const addTranscriptSegment = (req: Request, res: Response) => {
       speaker: segmentData.speaker,
     }
 
-    res.status(201).json(segment)
+    res.status(201).json({
+      segment,
+      alert, // Inclure l'alerte si elle a été créée
+    })
   } catch (error) {
     console.error('Erreur addTranscriptSegment:', error)
     res.status(500).json({ error: 'Erreur lors de l\'ajout du segment' })

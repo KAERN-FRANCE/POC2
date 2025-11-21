@@ -3,6 +3,7 @@ import HomePage from './pages/HomePage'
 import RecordingPage from './pages/RecordingPage'
 import MeetingsPage from './pages/MeetingsPage'
 import MeetingDetailPage from './pages/MeetingDetailPage'
+import MeetingSetupPage from './pages/MeetingSetupPage'
 import Layout from './components/Layout'
 
 function App() {
@@ -12,8 +13,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/record" element={<RecordingPage />} />
+          <Route path="/record/:id" element={<RecordingPage />} />
           <Route path="/meetings" element={<MeetingsPage />} />
           <Route path="/meetings/:id" element={<MeetingDetailPage />} />
+          <Route path="/meetings/:id/setup" element={<MeetingSetupPage />} />
         </Routes>
       </Layout>
     </Router>

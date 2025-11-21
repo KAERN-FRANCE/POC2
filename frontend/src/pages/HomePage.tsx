@@ -1,19 +1,25 @@
 import { Link } from 'react-router-dom'
-import { Mic, List, Zap, Globe, FileText } from 'lucide-react'
+import { Mic, List, Zap, Globe, FileText, Bot, ShieldCheck } from 'lucide-react'
 
 const HomePage = () => {
   return (
     <div className="space-y-12">
       {/* Hero Section */}
       <div className="text-center space-y-6">
+        <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-100 px-4 py-2 rounded-full mb-4">
+          <Bot className="w-5 h-5 text-blue-600" />
+          <span className="text-sm font-semibold text-gray-900">
+            Nouveau : Fact-Checking IA en temps réel
+          </span>
+        </div>
+
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
-          Enregistrez et transcrivez vos réunions
-          <span className="block text-blue-600 mt-2">en temps réel</span>
+          Réunions de board sécurisées avec
+          <span className="block text-blue-600 mt-2">vérification IA en temps réel</span>
         </h1>
 
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Une plateforme simple et puissante pour capturer vos réunions et obtenir des
-          transcriptions instantanées, accessible sur ordinateur et mobile.
+          L'IA ChatGPT analyse automatiquement chaque déclaration et alerte instantanément en cas d'erreurs factuelles, de chiffres incorrects ou d'incohérences avec vos documents de référence.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
@@ -37,35 +43,35 @@ const HomePage = () => {
 
       {/* Features */}
       <div className="grid md:grid-cols-3 gap-8 mt-16">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-            <Zap className="w-6 h-6 text-blue-600" />
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 shadow-md border-2 border-blue-200">
+          <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+            <Bot className="w-6 h-6 text-white" />
           </div>
           <h3 className="text-xl font-semibold mb-2 text-gray-900">
-            Transcription instantanée
+            IA Fact-Checking
           </h3>
           <p className="text-gray-600">
-            La transcription se fait en direct au fur et à mesure de la parole, sans délai.
+            ChatGPT analyse en temps réel et détecte automatiquement les erreurs factuelles, chiffres incorrects et incohérences.
           </p>
         </div>
 
         <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-            <Globe className="w-6 h-6 text-green-600" />
+            <ShieldCheck className="w-6 h-6 text-green-600" />
           </div>
-          <h3 className="text-xl font-semibold mb-2 text-gray-900">Multi-plateforme</h3>
+          <h3 className="text-xl font-semibold mb-2 text-gray-900">Documents de référence</h3>
           <p className="text-gray-600">
-            Fonctionne sur ordinateur, tablette et téléphone grâce à une interface responsive.
+            Uploadez vos rapports financiers, présentations et données pour une vérification automatique des faits.
           </p>
         </div>
 
         <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-          <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-            <FileText className="w-6 h-6 text-purple-600" />
+          <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+            <Zap className="w-6 h-6 text-orange-600" />
           </div>
-          <h3 className="text-xl font-semibold mb-2 text-gray-900">Export facile</h3>
+          <h3 className="text-xl font-semibold mb-2 text-gray-900">Alertes instantanées</h3>
           <p className="text-gray-600">
-            Exportez vos transcriptions en TXT, JSON ou PDF pour les partager facilement.
+            Recevez des alertes immédiates avec corrections suggérées quand des informations erronées sont détectées.
           </p>
         </div>
       </div>
