@@ -1,3 +1,4 @@
+// @ts-ignore - PDFKit doesn't have types
 import PDFDocument from 'pdfkit'
 import { Meeting } from '../types'
 
@@ -74,7 +75,7 @@ export const exportToPdf = (meeting: Meeting): Promise<Buffer> => {
 
       const buffers: Buffer[] = []
 
-      doc.on('data', (buffer) => buffers.push(buffer))
+      doc.on('data', (buffer: Buffer) => buffers.push(buffer))
       doc.on('end', () => resolve(Buffer.concat(buffers)))
       doc.on('error', reject)
 

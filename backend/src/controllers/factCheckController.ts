@@ -5,7 +5,7 @@ import {
   analyzeSegmentWithChatGPT,
   createFactCheckAlert,
   getAlertsForMeeting,
-  updateAlertStatus,
+  updateAlertStatus as updateAlertStatusService,
 } from '../services/factCheckService'
 import { FactCheckConfig } from '../types'
 import db from '../database'
@@ -135,7 +135,7 @@ export const updateAlertStatus = (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Statut invalide' })
     }
 
-    updateAlertStatus(alertId, status)
+    updateAlertStatusService(alertId, status)
 
     res.json({ success: true })
   } catch (error) {
