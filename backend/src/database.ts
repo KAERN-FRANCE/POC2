@@ -1,7 +1,15 @@
 import Database from 'better-sqlite3'
 import path from 'path'
+import fs from 'fs'
 
 const dbPath = process.env.DATABASE_PATH || './data/meetings.db'
+
+// Créer le dossier de la base de données s'il n'existe pas
+const dbDir = path.dirname(dbPath)
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true })
+}
+
 const db = new Database(dbPath)
 
 export const initDatabase = () => {
