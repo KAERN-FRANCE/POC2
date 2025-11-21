@@ -1,9 +1,22 @@
 import OpenAI from 'openai'
 import fs from 'fs'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+// Initialiser le client OpenAI seulement si la clé est présente
+let openai: OpenAI | null = null
+
+const getOpenAIClient = (): OpenAI => {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OpenAI API key non configurée. Ajoutez OPENAI_API_KEY dans le fichier .env')
+  }
+
+  if (!openai) {
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  }
+
+  return openai
+}
 
 export const transcribeWithWhisperAPI = async (audioFilePath: string): Promise<string> => {
   try {
@@ -16,7 +29,8 @@ export const transcribeWithWhisperAPI = async (audioFilePath: string): Promise<s
     const audioStream = fs.createReadStream(audioFilePath)
 
     // Appeler l'API Whisper
-    const transcription = await openai.audio.transcriptions.create({
+    const client = getOpenAIClient()
+    const transcription = await client.audio.transcriptions.create({
       file: audioStream,
       model: 'whisper-1',
       language: 'fr', // Français par défaut
@@ -47,7 +61,8 @@ export const transcribeWithWhisperDetailed = async (
     const audioStream = fs.createReadStream(audioFilePath)
 
     // Appeler l'API Whisper avec format JSON verbeux
-    const transcription = await openai.audio.transcriptions.create({
+    const client = getOpenAIClient()
+    const transcription = await client.audio.transcriptions.create({
       file: audioStream,
       model: 'whisper-1',
       language: 'fr',

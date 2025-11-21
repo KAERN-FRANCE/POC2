@@ -3,9 +3,22 @@ import db from '../database'
 import { v4 as uuidv4 } from 'uuid'
 import { ReferenceDocument, FactCheckAlert, FactCheckConfig } from '../types'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+// Initialiser le client OpenAI seulement si la clé est présente
+let openai: OpenAI | null = null
+
+const getOpenAIClient = (): OpenAI => {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OpenAI API key non configurée. Ajoutez OPENAI_API_KEY dans le fichier .env')
+  }
+
+  if (!openai) {
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  }
+
+  return openai
+}
 
 interface FactCheckResult {
   hasIssue: boolean
@@ -185,7 +198,8 @@ Si tu ne détectes AUCUN problème, réponds simplement :
 Analyse cette déclaration et compare-la avec les documents de référence. Y a-t-il des erreurs ou incohérences ?`
 
     // Appeler ChatGPT
-    const response = await openai.chat.completions.create({
+    const client = getOpenAIClient()
+    const response = await client.chat.completions.create({
       model: 'gpt-4o', // ou 'gpt-4-turbo' pour plus de rapidité
       messages: [
         { role: 'system', content: systemPrompt },
