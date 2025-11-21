@@ -32,6 +32,14 @@ const HomePage = () => {
           </Link>
 
           <Link
+            to="/documents"
+            className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
+          >
+            <FileText className="w-6 h-6" />
+            <span>Ajouter documents</span>
+          </Link>
+
+          <Link
             to="/meetings"
             className="flex items-center space-x-2 bg-white hover:bg-gray-50 text-gray-800 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-gray-300 transition-all"
           >

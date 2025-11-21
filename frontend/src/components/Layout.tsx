@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Mic, Home, List } from 'lucide-react'
+import { Mic, Home, List, FileText } from 'lucide-react'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -37,13 +37,25 @@ const Layout = ({ children }: LayoutProps) => {
               <Link
                 to="/meetings"
                 className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  isActive('/meetings')
+                  location.pathname.startsWith('/meetings')
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
                 <List className="w-4 h-4" />
                 <span className="hidden sm:inline">Réunions</span>
+              </Link>
+
+              <Link
+                to="/documents"
+                className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive('/documents')
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <FileText className="w-4 h-4" />
+                <span className="hidden sm:inline">Documents</span>
               </Link>
             </nav>
           </div>
